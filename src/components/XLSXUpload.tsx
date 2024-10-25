@@ -52,7 +52,7 @@ export default function XLSXUpload() {
           accept=".xlsx"
           onChange={handleFileChange}
         />
-        <button type="submit">Upload XLSX</button>
+        <button type="submit" className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Upload XLSX</button>
       </form>
     </div>
   );
