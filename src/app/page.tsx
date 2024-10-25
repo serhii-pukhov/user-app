@@ -20,7 +20,7 @@ async function deleteUser(id: string) {
 export default async function Home() {
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8 px-4 text-black">
+    <div>
       {/* Header */}
       <header className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-gray-800">User Management</h1>
