@@ -25,12 +25,13 @@ export default async function Home() {
       <header className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-gray-800">User Management</h1>
         <div className="flex space-x-3">
-          <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
-            <Link href="/users/new">Create</Link>
-          </button>
-          <form action={deleteAllUsers}>
-            <button type="submit" className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Delete All</button>
-          </form>
+          <Link href="/users/new">
+            <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+              Create
+            </button>
+          </Link>
+            <button onClick={deleteAllUsers} className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Delete All</button>
+          
           <XLSXUpload />
           {/* <button className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Import</button> */}
         </div>
