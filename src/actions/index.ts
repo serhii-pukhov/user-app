@@ -2,7 +2,6 @@
 import { db } from '@/db';
 import { redirect } from 'next/navigation';
 import ExcelJS from 'exceljs';
-import { User } from '@prisma/client';
 
 export async function findUsers() {
     return await db.user.findMany();
