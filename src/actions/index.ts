@@ -3,6 +3,7 @@ import { db } from '@/db';
 import { redirect } from 'next/navigation';
 import ExcelJS from 'exceljs';
 import { User } from '@prisma/client';
+import { revalidatePath } from 'next/cache';
 
 export async function findUsers() {
     return await db.user.findMany();
@@ -38,7 +39,6 @@ export async function deleteUser(id: string) {
             id
         }
     });
-    redirect("/");
 }
 
 interface ParsedUser {
@@ -68,4 +68,9 @@ export async function exportUsers(file: File): Promise<ParsedUser[]> {
     createUsers(parsedData);
 
     return parsedData;
+}
+
+export async function refresh() {
+    revalidatePath("/");
+    redirect("/");
 }

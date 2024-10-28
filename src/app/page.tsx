@@ -2,6 +2,7 @@ import Link from "next/link";
 import * as actions from "@/actions";
 import { redirect } from 'next/navigation';
 import XLSXUpload from "@/components/XLSXUpload"
+import UserList from "@/components/UserList";
 
 export const dynamic = "force-dynamic";
 
@@ -11,14 +12,12 @@ async function deleteAllUsers() {
   redirect("/");
 }
 
-async function deleteUser(id: string) {
-  "use server";
-  actions.deleteUser(id);
+function refresh() {
   redirect("/");
 }
 
 export default async function Home() {
-
+  const users = await actions.findUsers();
   return (
     <div>
       {/* Header */}
@@ -30,66 +29,21 @@ export default async function Home() {
               Create
             </button>
           </Link>
-            <button onClick={deleteAllUsers} className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Delete All</button>
-          
+          <form action={deleteAllUsers}>
+            <button type="submit" className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Delete All</button>
+          </form>
+
           <XLSXUpload />
           {/* <button className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Import</button> */}
         </div>
       </header>
 
-      {/* User List */}
-      <div className="bg-white shadow-md rounded-lg overflow-hidden">
-        <table className="w-full text-left">
-          <thead>
-            <tr className="bg-gray-200 text-gray-600 uppercase text-sm">
-              <th className="py-3 px-6">Name</th>
-              <th className="py-3 px-6">Email</th>
-              <th className="py-3 px-6">Created At</th>
-              <th className="py-3 px-6">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {renderUsers()}
-          </tbody>
-        </table>
-      </div>
+      <UserList users={users} />
     </div>
 
   );
 
 }
 
-async function renderUsers() {
-  "use server";
-  const users = await actions.findUsers();
 
-  if (users.length == 0) {
-    return (
-      <tr>
-        <td colSpan="4" className="py-4 px-6 text-center text-gray-500">
-          No users found.
-        </td>
-      </tr>
-    );
-  }
-
-  return users.map((user) => {
-    const deleteUserAction = deleteUser.bind(null, user.id);
-    return (
-      <tr key={user.id} className="border-b">
-        <td className="py-4 px-6">{user.name}</td>
-        <td className="py-4 px-6">{user.email}</td>
-        <td className="py-4 px-6">{user.createdAt.toLocaleString()}</td>
-        <td className="py-4 px-6">
-          <form action={deleteUserAction}>
-            <button className="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded">Delete</button>
-          </form>
-
-        </td>
-      </tr>
-
-
-    )
-  })
-}
 
