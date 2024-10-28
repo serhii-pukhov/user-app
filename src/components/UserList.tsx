@@ -1,14 +1,14 @@
 "use client";
 
 import { User } from "@prisma/client";
-import { deleteUser } from "@/actions";
 import { useState } from "react";
 
 interface UserListProps {
-    users: User[]
+    users: User[],
+    onDelete: (id: string) => void,
 }
-export default function UserList(props: UserListProps) {
-    
+export default function UserList({ users, onDelete }: UserListProps) {
+
     return (<div className="bg-white shadow-md rounded-lg overflow-hidden">
         <table className="w-full text-left">
             <thead>
@@ -20,20 +20,16 @@ export default function UserList(props: UserListProps) {
                 </tr>
             </thead>
             <tbody>
-                {renderUsers(props.users)}
+                {renderUsers(users, onDelete)}
             </tbody>
         </table>
     </div>);
 }
 
-function renderUsers(passedUsers: User[]) {
-    const [users, setUsers] = useState(passedUsers);
+function renderUsers(passedUsers: User[], onDelete: (id: string) => void) {
+    console.log(passedUsers);
 
-    const handleDelete = (id: string) => {
-        deleteUser(id);
-        setUsers(users.filter((user) => user.id !== id));
-    }
-    if (users.length == 0) {
+    if (passedUsers.length == 0) {
         return (
             <tr>
                 <td colSpan="4" className="py-4 px-6 text-center text-gray-500">
@@ -43,14 +39,14 @@ function renderUsers(passedUsers: User[]) {
         );
     }
 
-    return users.map((user) => {
+    return passedUsers.map((user) => {
         return (
             <tr key={user.id} className="border-b">
                 <td className="py-4 px-6">{user.name}</td>
                 <td className="py-4 px-6">{user.email}</td>
                 <td className="py-4 px-6" suppressHydrationWarning={true}>{user.createdAt.toLocaleString()}</td>
                 <td className="py-4 px-6">
-                    <button onClick={() => handleDelete(user.id)} className="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded">Delete</button>
+                    <button onClick={() => onDelete(user.id)} className="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded">Delete</button>
                 </td>
             </tr>
         )

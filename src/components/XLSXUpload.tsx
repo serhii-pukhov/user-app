@@ -4,7 +4,11 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 import { redirect } from 'next/navigation';
 import { User } from '@prisma/client';
 
-export default function XLSXUpload() {
+interface XLSXUploadProps {
+  onImport: () => void
+}
+
+export default function XLSXUpload({ onImport }: XLSXUploadProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [parsedData, setParsedData] = useState<User[] | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,11 +30,11 @@ export default function XLSXUpload() {
       if (res.ok) {
         const result = await res.json();
         setParsedData(result.data);
+        onImport();
       } else {
         console.error('Error uploading the file');
       }
-      
-      redirect("/");
+
     }
   };
 
