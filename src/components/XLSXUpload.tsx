@@ -3,8 +3,6 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { redirect } from 'next/navigation';
 import { User } from '@prisma/client';
-import { refresh } from '@/actions';
-import { revalidatePath } from 'next/cache';
 
 export default function XLSXUpload() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -31,7 +29,8 @@ export default function XLSXUpload() {
       } else {
         console.error('Error uploading the file');
       }
-      refresh();
+      
+      redirect("/");
     }
   };
 

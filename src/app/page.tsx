@@ -12,10 +12,6 @@ async function deleteAllUsers() {
   redirect("/");
 }
 
-function refresh() {
-  redirect("/");
-}
-
 export default async function Home() {
   const users = await actions.findUsers();
   return (
@@ -34,7 +30,6 @@ export default async function Home() {
           </form>
 
           <XLSXUpload />
-          {/* <button className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Import</button> */}
         </div>
       </header>
 
